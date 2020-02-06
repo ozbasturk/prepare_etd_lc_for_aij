@@ -58,23 +58,27 @@ except:
     star_coords = coord.SkyCoord(RA, DEC, frame='icrs',\
                         unit=(u.hourangle,u.deg), equinox="J2000")
 
-    
+# Now let us determine the location of the observer
 print("The observatories in our database are \n")
+print("Please be patient, this may take some time...\n")
 print(coord.EarthLocation.get_site_names())
-print()
 observatory = input("Please enter the name of the observatory. If your observatory is not in the list hit <enter>\n")
-
 if observatory == '':
     observatory_address = input("Try entering the address of the observatory look for its coordinates in Google Earth: \n")
-    try:
-        obsloc = coord.EarthLocation.of_site(observatory_address)
-    except:
-        print("The address you have entered can not be found in Google Earth!")
-        print()
-        obslat = float(input("Please enter the latitude of the observatory in dd.dddd format (north is positive): \n"))
+    if observatory_address == '':
         obslong = float(input("Please enter the longitude of the observatory in d.ddd format (east is positive): \n"))
-        obsalt = float(input("Please enter the altitude of the observatory in meters (if not known enter 0: \n"))
+        obslat = float(input("Please enter the latitude of the observatory in dd.dddd format (north is positive): \n"))
+        obsalt = float(input("Please enter the altitude of the observatory in meters (if not known enter 0): \n"))
         obsloc = coord.EarthLocation(lat=obslat*u.deg, lon=obslong*u.deg, height=obsalt*u.m)
+    else: 
+        try:
+            obsloc = coord.EarthLocation.of_site(observatory_address)
+        except:
+            print("The address you have entered can not be found in Google Earth!")
+            obslong = float(input("Please enter the longitude of the observatory in d.ddd format (east is positive): \n"))
+            obslat = float(input("Please enter the latitude of the observatory in dd.dddd format (north is positive): \n"))
+            obsalt = float(input("Please enter the altitude of the observatory in meters (if not known enter 0): \n"))
+            obsloc = coord.EarthLocation(lat=obslat*u.deg, lon=obslong*u.deg, height=obsalt*u.m)
 else:
     obsloc = coord.EarthLocation.of_site(observatory)
 
@@ -110,6 +114,7 @@ lc['airmass'] = X
 # First find the index of the last '.' character where the extension starts
 indext = len(filename) - filename[-1::-1].find('.') - 1
 file2wr = filename[:indext]+'_converted.dat'
+lc = lc.sort_values(['BJD-TDB'])
 lc.to_csv(file2wr, sep = '\t', \
           float_format = '%.6f', \
           columns=['BJD-TDB', flux, fluxerr, 'airmass'],\
