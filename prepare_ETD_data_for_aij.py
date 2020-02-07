@@ -82,6 +82,11 @@ if observatory == '':
 else:
     obsloc = coord.EarthLocation.of_site(observatory)
 
+# make sure they are numeric
+lc[jdcol] = pd.to_numeric(lc[jdcol]).astype(float)
+lc[flux] = pd.to_numeric(lc[flux]).astype(float)
+lc[fluxerr] = pd.to_numeric(lc[fluxerr]).astype(float)
+
 times = time.Time(lc[jdcol], format='jd',scale='utc', location=obsloc)
 
 # Cacluate bbarycentric or heliocentric time difference
