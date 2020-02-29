@@ -113,8 +113,6 @@ elif jdtype == 'HJD':
     timesjd -= ltt_helio
     ltt_bary = times.light_travel_time(star_coords)
 elif jdtype == 'BJD':
-    ltt_bary_jd = times.light_travel_time(star_coords)
-    timesjd -= ltt_bary_jd
     ltt_bary = 0.
 else:
     print("Your timing frame is not recognized")
