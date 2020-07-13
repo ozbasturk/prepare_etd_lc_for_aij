@@ -31,6 +31,11 @@ print()
 jdtype = input("What is the reference frame for the timings reported in UTC scale Please enter 'JD' for geocentric, 'HJD' for heliocentric, 'BJD' for barycentric values?: \n")
 print()
 
+# If the scale is already dynamical (TDB) or in UTC
+jdscale = 'UTC'
+jdscale = input(
+    "What is the scale of the timings reported in. Please enter 'TDB' if the timings are dynamical or 'UTC' if they are not: \n")
+
 # Remove outliers
 # Discarding criteria is 5*sigma
 mu = lc[flux].mean()
@@ -117,6 +122,10 @@ elif jdtype == 'BJD':
 else:
     print("Your timing frame is not recognized")
     os.exit()
+if jdscale == 'TDB':
+    time_barycentre = ltt_bary
+else:
+    time_barycentre = times.tdb + ltt_bary
 time_barycentre = times.tdb + ltt_bary
 bjd_tdb = time_barycentre.value
 times_bjd_tdb = time.Time(bjd_tdb, format='jd', scale='tdb')
