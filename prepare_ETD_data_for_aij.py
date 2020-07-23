@@ -115,7 +115,6 @@ if jdtype == "JD":
 elif jdtype == 'HJD':
     ltt_helio = times.light_travel_time(star_coords, 'heliocentric')
     times -= ltt_helio
-    timesjd -= ltt_helio
     ltt_bary = times.light_travel_time(star_coords)
 elif jdtype == 'BJD':
     ltt_bary = 0.
