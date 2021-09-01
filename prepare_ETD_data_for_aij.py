@@ -125,7 +125,6 @@ if jdscale == 'TDB':
     time_barycentre = ltt_bary
 else:
     time_barycentre = times.tdb + ltt_bary
-time_barycentre = times.tdb + ltt_bary
 bjd_tdb = time_barycentre.value
 times_bjd_tdb = time.Time(bjd_tdb, format='jd', scale='tdb')
 lc['BJD-TDB'] = times_bjd_tdb
